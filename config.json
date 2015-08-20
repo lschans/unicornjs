@@ -6,6 +6,22 @@
   },
   "services":[
     {
+      "name":"demo",
+      "type":"redis-mthread",
+      "lang":"node",
+      "masterCode":"master.js",
+      "workerCode":"worker.js",
+      "testCode":"test.js",
+      "interactiveCode":"interactive.js",
+      "instances":0,
+      "threads":2,
+      "minThreadLifetime":5000,
+      "maxThreadLifetime":15000,
+      "minServiceLifetime":60000,
+      "maxServiceLifetime":300000,
+      "maxExec":500
+    },
+    {
       "name":"math",
       "type":"redis-mthread",
       "lang":"node",
@@ -15,8 +31,10 @@
       "interactiveCode":"interactive.js",
       "instances":2,
       "threads":2,
-      "dieMin":5000,
-      "dieMax":15000,
+      "minThreadLifetime":5000,
+      "maxThreadLifetime":15000,
+      "minServiceLifetime":60000,
+      "maxServiceLifetime":300000,
       "maxExec":1000
     }
   ]

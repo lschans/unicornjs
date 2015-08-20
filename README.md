@@ -5,6 +5,7 @@
 * Unicorn is fully backed by Redis.
 * Unicorn is infinite scalable.
 * All services are 'hardened' out of the box
+* Services and threads automatically kill and respawn themselves, this prevents memory leaks, crashed services, and increases the overal stabilty of the platform
 
 ##Unicorn pro's
 * Endless distribution of data as far as data centers reach
