@@ -1,0 +1,14 @@
+{
+  "cluster":{
+    "threads":2
+  },
+  "redis":{
+    "port":6379,
+    "server":"localhost",
+    "channel":"testChannel"
+  },
+  "service":{
+    "dieMin":5000,
+    "dieMax":15000
+  }
+}

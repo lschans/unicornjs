@@ -1,0 +1,23 @@
+{
+  "name": "unicorn",
+  "version": "1.0.0",
+  "description": "The unicorn micro-service infrastructure",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lschans/unicorn.git"
+  },
+  "author": "Lars van der Schans and Daniela Ruiz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lschans/unicorn/issues"
+  },
+  "homepage": "https://github.com/lschans/unicorn",
+  "dependencies": {
+    "redis": "^0.12.1",
+    "xtend": "^4.0.0"
+  }
+}

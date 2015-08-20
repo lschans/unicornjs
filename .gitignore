@@ -24,4 +24,13 @@ build/Release
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
-node_modules
+
+*~
+.DS_Store
+.idea
+
+node_modules/*
+!node_modules/unicorn
+!node_modules/unicorn/*
+node_modules/\@*/*/node_modules
+node_modules/@*/*/node_modules
