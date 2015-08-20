@@ -1,11 +1,14 @@
-# unicorn
-##Lure the unicorn out of the forest
+# unicornjs
+##Lure the unicorn out of the bush
 * The unicorn micro-service infrastructure is a distributed way of delivering data and services redundant, reliable and multi-threaded.
 * Unicorn reduces the pain of micro-services and keeps the focus on the logic you need in your project.
 * Unicorn is fully backed by Redis.
 * Unicorn is infinite scalable.
 * All services are 'hardened' out of the box
 * Services and threads automatically kill and respawn themselves, this prevents memory leaks, crashed services, and increases the overal stabilty of the platform
+
+##The basic idea
+![unicorn basics](/images/bus-basics.png)
 
 ##Unicorn pro's
 * Endless distribution of data as far as data centers reach
