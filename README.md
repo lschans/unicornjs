@@ -1,4 +1,4 @@
-# unicornjs
+#![unicorn basics](/images/title-bar.png)
 ##Lure the unicorn out of the bush
 * The unicorn micro-service infrastructure is a distributed way of delivering data and services redundant, reliable and multi-threaded.
 * Unicorn reduces the pain of micro-services and keeps the focus on the logic you need in your project.
