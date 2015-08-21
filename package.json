@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/lschans/unicorn",
   "dependencies": {
+    "commander": "^2.8.1",
     "redis": "^0.12.1",
     "xtend": "^4.0.0"
   }

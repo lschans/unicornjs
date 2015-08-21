@@ -6,6 +6,7 @@
 * Unicorn is infinite scalable.
 * All services are 'hardened' out of the box
 * Services and threads automatically kill and respawn themselves, this prevents memory leaks, crashed services, and increases the overal stabilty of the platform
+* Hybrid service development, use nodejs, PHP, or some other language of choice
 
 ##The basic idea
 ![unicorn basics](/images/bus-basics.png)
