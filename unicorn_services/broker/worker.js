@@ -40,7 +40,7 @@ module.exports = function(config, redis) {
                             console.log('somebody is processing me!');
                             // check if there is another broker running
 
-                            client.keys('*')
+                            //client.keys('*')
 
                                 //msg.ack = 1;
                                 //msg.respondChannel = msg.serviceID + '_' + msg.msgpid;
