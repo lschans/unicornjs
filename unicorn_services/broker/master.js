@@ -27,7 +27,7 @@ module.exports = function(config, redis) {
              */
 
             // Log the output for demo purposes
-            console.log(message);
+            //console.log(message);
 
             // Post the message back to redis on the response channel
         },
