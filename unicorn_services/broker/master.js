@@ -3,6 +3,7 @@
  By: Lars van der Schans ( 2015 )
  *************************************************/
 
+
 module.exports = function(config, redis) {
     return {
         startLogic: function () {
@@ -11,20 +12,12 @@ module.exports = function(config, redis) {
              * this code will be executed once on the start of the master process.
              */
 
-            console.log('Hey I started');
+            //config.initChannel = 'broker-init';
+            //// Dummy interval for sending messages on the bus
+            //setInterval(function(){ // Test that will publish stuff
+            //    publishClient.publish(config.redis.channel, 'This is a test message');
+            //}, 2000);
 
-            // Dummy publish client for demo purposes
-            publishClient = redis.createClient(config.redis.port, config.redis.server, {});
-
-            // Catch errors for the publish clientls
-            publishClient.on("error", function (err) {
-                console.log("Redis publish error: " + err);
-            });
-
-            // Dummy interval for sending messages on the bus
-            setInterval(function(){ // Test that will publish stuff
-                publishClient.publish(config.redis.channel, 'This is a test message');
-            }, 2000);
         },
         workLogic: function (message) {
             /*
@@ -35,6 +28,8 @@ module.exports = function(config, redis) {
 
             // Log the output for demo purposes
             console.log(message);
+
+            // Post the message back to redis on the response channel
         },
         errorLogic: function (err) {
             /*

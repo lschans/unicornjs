@@ -36,8 +36,6 @@ if (Program.repl) {
 
 // Detect spawn mode and set
 if (Program.spawn) { // Spawn a process
-    // Tell the process here which one to start
-    console.log(Program.spawn);
     // Clean up and check for integer and existance in future
     config.process = config.services[Program.spawn];
     var thisProcess = require('unicorn/redis-mthread')(config, Redis);
@@ -46,6 +44,5 @@ if (Program.spawn) { // Spawn a process
 // Run all the services
 if (Program.run){
     // Load the service spawner so we can spawn all services from the config
-    var serviceSpawner = require('unicorn/service-spawner')(config, Redis);
+    var serviceSpawner = require('unicorn/service-spawner')(config);
 }
-

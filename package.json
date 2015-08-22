@@ -18,6 +18,8 @@
   "homepage": "https://github.com/lschans/unicorn",
   "dependencies": {
     "commander": "^2.8.1",
+    "es6-promise": "^3.0.2",
+    "joi": "^6.6.1",
     "redis": "^0.12.1",
     "xtend": "^4.0.0"
   }
