@@ -20,49 +20,48 @@ module.exports = function(config, redis) {
              * The raw message comes in and should be processed.
              * When done processing; the callback message must be called in normal (err, message) format.
              */
-
-
             // Catch redis message
 
                 //Getting all the services that are handler for this broker
                 var msg = JSON.parse(message);
-
-                console.log(busmsg.verify(msg));
 
                 if (!busmsg.verify(msg))
                     console.log('Wrong Message Format!');
                 else {
                     if (msg.ack == 0) {
                         var client = redis.createClient(config.redis.port, config.redis.server, {});
+                        var publicChannel = redis.createClient(config.redis.port, config.redis.server, {});
 
-                        if (msg.serviceID == 'broker'){
+                        if (msg.serviceID == 'broker') {
+                            // assign a channel but also should listen in broker main channel call 'broker'
 
-                            console.log('somebody is processing me!');
-                            // check if there is another broker running
-
-                            client.keys('*')
-
-                                //msg.ack = 1;
-                                //msg.respondChannel = msg.serviceID + '_' + msg.msgpid;
-                                //client.lpush(msg.serviceID, msg.respondChannel);
-                                //client.HINCRBY('broker' + msg.msgpid, (msg.serviceID).toString(), 1);   //Add 1 to the hash of services
-
-                        }else{
-                            client.HINCRBY('broker', (msg.serviceID).toString(), 1);   //Add 1 to the hash of services
-                            //Pushing the channel to the list of channels of the service
-                            //setting the response attributes
+                            var channelName = msg.serviceID + '_' + msg.msgpid;
                             msg.ack = 1;
-                            msg.respondChannel =  msg.serviceID+'_'+msg.msgpid;
+
+                            //I respond with the particular channel
+                            msg.respondChannel = channelName;
+                            publicChannel.publish('broker-init', JSON.stringify(msg));
+
+                            //I respond with the general channel
+                            msg.respondChannel = msg.serviceID;
+                            publicChannel.publish('broker-init', JSON.stringify(msg));
+
+                            client.HMSET(msg.serviceID, msg.serviceID, channelName);
+                            //response
+
+
+                        } else {
+                            msg.ack = 1;
+                            msg.respondChannel = msg.serviceID + '_' + msg.msgpid;
+                            //I should add one to the broker that is processing this, maybe this should be here CHECK
+                            //client.HINCRBY('broker', (msg.serviceID).toString(), 1);   //Add 1 to the hash of services
                             client.lpush(msg.serviceID, msg.respondChannel);
                             //response
-                            var pChannel = redis.createClient(config.redis.port, config.redis.server, {});
-                            pChannel.publish('broker-init', JSON.stringify(msg));
-
+                            publicChannel.publish('broker-init', JSON.stringify(msg));
                         }
-
-
                     }
                 }
+
             console.log('Broker listening on this channel for this service ');
 
             callback(null, message);
