@@ -9,11 +9,11 @@
 * Hybrid service development, use nodejs, PHP, or some other language of choice
 
 ##The basic idea
-![unicorn basics](/images/bus-basics.png)
+![unicorn basics](/images/service-dataflow.png)
 
 ##Unicorn pro's
 * Endless distribution of data as far as data centers reach
-
+x
 ##Unicorn cons
 * Everything you send needs to be a string, so if you have a date-object you want to send, you need to convert this to a string first
 

@@ -46,6 +46,7 @@ module.exports = function(config, redis) {
                             msg.respondChannel = msg.serviceID;
                             publicChannel.publish('broker-init', JSON.stringify(msg));
 
+                            //client.keys('*')
                             client.HMSET(msg.serviceID, msg.serviceID, channelName);
                             //response
 
