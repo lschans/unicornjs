@@ -36,6 +36,7 @@ module.exports = function(config, redis) {
                             // assign a channel but also should listen in broker main channel call 'broker'
 
                             var channelName = msg.serviceID + '_' + msg.msgpid;
+
                             msg.ack = 1;
 
                             //I respond with the particular channel
@@ -43,8 +44,8 @@ module.exports = function(config, redis) {
                             publicChannel.publish('broker-init', JSON.stringify(msg));
 
                             //I respond with the general channel
-                            msg.respondChannel = msg.serviceID;
-                            publicChannel.publish('broker-init', JSON.stringify(msg));
+                            //msg.respondChannel = msg.serviceID;
+                            //publicChannel.publish('broker-init', JSON.stringify(msg));
 
                             //client.keys('*')
                             client.HSET(msg.serviceID, channelName, 1); //start as active
