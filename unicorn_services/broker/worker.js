@@ -47,7 +47,7 @@ module.exports = function(config, redis) {
                             publicChannel.publish('broker-init', JSON.stringify(msg));
 
                             //client.keys('*')
-                            client.HMSET(msg.serviceID, msg.serviceID, channelName);
+                            client.HSET(msg.serviceID, channelName, 1); //start as active
                             //response
 
 
@@ -56,7 +56,8 @@ module.exports = function(config, redis) {
                             msg.respondChannel = msg.serviceID + '_' + msg.msgpid;
                             //I should add one to the broker that is processing this, maybe this should be here CHECK
                             //client.HINCRBY('broker', (msg.serviceID).toString(), 1);   //Add 1 to the hash of services
-                            client.lpush(msg.serviceID, msg.respondChannel);
+                            //client.lpush(msg.serviceID, msg.respondChannel);
+                            //here i should add one to the hash of the broker that is handler me
                             //response
                             publicChannel.publish('broker-init', JSON.stringify(msg));
                         }
