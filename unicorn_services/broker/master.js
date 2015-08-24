@@ -17,7 +17,6 @@ module.exports = function(config, redis) {
             //setInterval(function(){ // Test that will publish stuff
             //    publishClient.publish(config.redis.channel, 'This is a test message');
             //}, 2000);
-
         },
         workLogic: function (message) {
             /*
