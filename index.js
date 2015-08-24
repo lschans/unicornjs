@@ -43,24 +43,29 @@ if (Program.repl) {
     sock.on('connect', function () {
         process.stdin.resume();
         process.stdin.setRawMode(true)
-    })
+    });
+
+    sock.on('exit', function () {
+        console.log('Got "exit" event from repl!');
+        process.exit();
+    });
 
     sock.on('close', function done () {
         process.stdin.setRawMode(false);
         process.stdin.pause();
         sock.removeListener('close', done);
-    })
+    });
 
     process.stdin.on('end', function () {
         sock.destroy();
         console.log();
-    })
+    });
 
     process.stdin.on('data', function (b) {
         if (b.length === 1 && b[0] === 4) {
             process.stdin.emit('end');
         }
-    })
+    });
 }
 
 // Detect spawn mode and set
@@ -78,15 +83,22 @@ if (Program.run){
     // Start a repl
     Net.createServer(function (socket) {
         var r = Repl.start({
-            prompt: 'socket '+socket.remoteAddress+':'+socket.remotePort+'> '
+            prompt: 'unicorn> '
             , input: socket
             , output: socket
             , terminal: true
             , useGlobal: false
-        })
+        });
+
         r.on('exit', function () {
             socket.end()
         })
+
         r.context.socket = socket
+        r.context.exit = function () {
+            console.log('Process stoped by repl user');
+            process.exit();
+        }
+
     }).listen(13131)
 }
