@@ -20,6 +20,7 @@ module.exports = function(config, redis) {
             var msg = JSON.parse(message); // I trust redis to check the msg format
             var channelName;
             var client = redis.createClient(config.redis.port, config.redis.server, {});
+
             if (msg.ack == 0) {
                 var publicChannel = redis.createClient(config.redis.port, config.redis.server, {});
 
@@ -29,7 +30,7 @@ module.exports = function(config, redis) {
                     channelName = msg.serviceID + '_' + msg.msgpid;
                     msg.ack = 1;
                     msg.respondChannel = channelName; //I respond with the particular channel
-                    client.HSET(msg.serviceID, channelName, 1); //start as active
+                    client.HSET(msg.serviceID, channelName, 0); //start as active
                     //response
                     publicChannel.publish('broker-init', JSON.stringify(msg));
                 }else{
@@ -38,10 +39,12 @@ module.exports = function(config, redis) {
                         console.log('I am broker ' + process.pid);
                         client.HINCRBY('broker_' + process.pid, msg.serviceID, 1);   //Add 1 to the hash of services
                         channelName = msg.serviceID + '_' + msg.msgpid; // creating service name
-                        client.HINCRBY((msg.serviceID).toString(), channelName.toString(), 1);   //Add 1 to the hash of services
+                        client.HINCRBY(msg.serviceID, channelName, 1);   //Add 1 to the hash of services
                         msg.ack = 1; // change the state of the msg to process
                         msg.respondChannel = channelName;
-                        publicChannel.publish('broker_' + process.pid, JSON.stringify(msg));
+                        msg.brokerChain.push({'broker': 'broker_' + process.pid});
+                        console.log(msg);
+                        publicChannel.publish('broker-init', JSON.stringify(msg));
                     }else{ // the msg is not asking for a channel
                         //pass the message to a service
                         console.log('I am broker ' + config.process.name + ' processing message... finally');

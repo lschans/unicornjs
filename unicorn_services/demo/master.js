@@ -13,18 +13,10 @@ module.exports = function(config, redis) {
 
             console.log('Hey I started');
 
-            // Dummy publish client for demo purposes
-            publishClient = redis.createClient(config.redis.port, config.redis.server, {});
-
-            // Catch errors for the publish clientls
-            publishClient.on("error", function (err) {
-                console.log("Redis publish error: " + err);
-            });
-
             // Dummy interval for sending messages on the bus
-            setInterval(function(){ // Test that will publish stuff
-                publishClient.publish(config.redis.channel, 'This is a test message');
-            }, 2000);
+            //setInterval(function(){ // Test that will publish stuff
+            //    publishClient.publish(config.redis.channel, 'This is a test message');
+            //}, 2000);
         },
         workLogic: function (message) {
             /*
