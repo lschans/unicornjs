@@ -79,26 +79,4 @@ if (Program.spawn) { // Spawn a process
 if (Program.run){
     // Load the service spawner so we can spawn all services from the config
     var serviceSpawner = require('unicorn/service-spawner')(config);
-
-    // Start a repl
-    Net.createServer(function (socket) {
-        var r = Repl.start({
-            prompt: 'unicorn> '
-            , input: socket
-            , output: socket
-            , terminal: true
-            , useGlobal: false
-        });
-
-        r.on('exit', function () {
-            socket.end()
-        })
-
-        r.context.socket = socket
-        r.context.exit = function () {
-            console.log('Process stoped by repl user');
-            process.exit();
-        }
-
-    }).listen(13131)
 }
