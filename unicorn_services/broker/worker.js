@@ -36,14 +36,12 @@ module.exports = function(config, redis) {
                 }else{
                     if (msg.respondChannel == ' ') { //check if this a message or if this is asking for a channel
                         // Assign a channel
-                        console.log('Assign Channel to %s', msg.serviceID);
                         client.HINCRBY('broker_' + process.pid, msg.serviceID, 1);   //Add 1 to the hash of services
                         channelName = msg.serviceID + '_' + msg.msgpid; // creating service name
                         client.HINCRBY(msg.serviceID, channelName, 1);   //Add 1 to the hash of services
                         msg.ack = 1; // change the state of the msg to process
                         msg.respondChannel = channelName;
                         msg.brokerChain.push({'broker': 'broker_' + process.pid});
-                        console.log(msg);
                         publicChannel.publish('broker-init', JSON.stringify(msg));
                     }else{ // the msg is not asking for a channel
                         //pass the message to a service
