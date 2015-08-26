@@ -11,6 +11,8 @@ module.exports = function(config, redis) {
              * this code will be executed once on the start of the master process.
              */
 
+            console.log('Hey math started');
+
         },
         workLogic: function (message) {
             /*

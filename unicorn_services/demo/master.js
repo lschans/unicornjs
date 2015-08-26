@@ -11,7 +11,7 @@ module.exports = function(config, redis) {
              * this code will be executed once on the start of the master process.
              */
 
-            console.log('Hey I started');
+            console.log('Hey demo started');
 
             // Dummy interval for sending messages on the bus
             //setInterval(function(){ // Test that will publish stuff
