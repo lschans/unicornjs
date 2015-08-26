@@ -3,15 +3,6 @@
     "port":6379,
     "server":"localhost"
   },
-  "repl":{
-    "net":{
-      "enabled":true,
-      "port":13131
-    },
-    "console":{
-      "enabled":true
-    }
-  },
   "rootdir":"",
   "debug":false,
   "services":[
