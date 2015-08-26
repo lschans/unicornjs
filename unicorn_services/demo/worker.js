@@ -3,6 +3,8 @@
  By: Lars van der Schans ( 2015 )
  *************************************************/
 
+var busTalk = require('unicorn/bus-talk');
+
 module.exports = function(config, redis) {
     return {
         startLogic: function () {
