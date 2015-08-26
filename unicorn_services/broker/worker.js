@@ -17,9 +17,15 @@ module.exports = function(config, redis) {
              * When done processing; the callback message must be called in normal (err, message) format.
              */
             //Getting all the services that are handler for this broker
+
+            console.log('here')
+            console.log(typeof message)
+
+
             var msg = JSON.parse(message); // I trust redis to check the msg format
             var channelName;
             var client = redis.createClient(config.redis.port, config.redis.server, {});
+
 
             if (msg.ack == 0) {
                 var publicChannel = redis.createClient(config.redis.port, config.redis.server, {});
@@ -34,6 +40,9 @@ module.exports = function(config, redis) {
                     //response
                     publicChannel.publish('broker-init', JSON.stringify(msg));
                 }else{
+
+
+
                     if (msg.respondChannel == ' ') { //check if this a message or if this is asking for a channel
                         // Assign a channel
                         client.HINCRBY('broker_' + process.pid, msg.serviceID, 1);   //Add 1 to the hash of services
@@ -46,11 +55,22 @@ module.exports = function(config, redis) {
                     }else{ // the msg is not asking for a channel
                         //pass the message to a service
                         console.log('I am broker ' + config.process.name + ' processing message... finally');
-                        //Pushing the channel to the list of channels of the service
-                        channelName = msg.serviceID + '_' + msg.msgpid;
-                        msg.ack = 1;
-                        msg.respondChannel = channelName;
-                        publicChannel.publish('broker_' + process.pid, JSON.stringify(msg));
+
+                        client.HGETALL(msg.serviceRequired, function (err, obj) {
+                            if(err) console.log(err);
+                            else{
+                                if (JSON.stringify(obj) != '{}'){
+                                    var keys = [];
+                                    for(var k in obj) keys.push(k);
+
+                                    msg.ack = 1;
+                                    publicChannel.publish(keys[0], JSON.stringify(msg));
+                                }
+
+                            }
+                        });
+
+
                     }
                 }
             }
