@@ -24,6 +24,8 @@ module.exports = function(config, redis) {
 
             // Random boolean for testing purposes, if true the service will crash
             //demo is asking for a math job
+
+            console.log('I a a demo worker, please be nice!');
             busTalk.getAnswer('math', 'printMessage', 2,process.pid, config).then(function (result) {
                 console.log('Demo had a respond %s', result);
                 callback(null, result);

@@ -10,8 +10,9 @@ module.exports = function(config, redis) {
              * This function will start when the master process starts
              * this code will be executed once on the start of the master process.
              */
-
-            console.log('Hey math started');
+            var colors = require('colors');
+            // Log the output for demo purposes
+            console.log(colors.cyan('Hey math started'));
 
         },
         workLogic: function (message) {
@@ -20,9 +21,9 @@ module.exports = function(config, redis) {
              * Message is the processed and final version, usually this is the message that is posted to the response channel
              * A normal action to do would be to post this message back to the response channel
              */
-
+            var colors = require('colors');
             // Log the output for demo purposes
-            console.log(message);
+            console.log(colors.cyan(message));
         },
         errorLogic: function (err) {
             /*

@@ -10,8 +10,9 @@ module.exports = function(config, redis) {
              * This function will start when the master process starts
              * this code will be executed once on the start of the master process.
              */
-
-            console.log('Hey demo started');
+            var colors = require('colors');
+            // Log the output for demo purposes
+            console.log(colors.cyan('Hey demo started'));
 
             // Dummy interval for sending messages on the bus
             //setInterval(function(){ // Test that will publish stuff
