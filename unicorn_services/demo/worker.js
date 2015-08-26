@@ -23,16 +23,19 @@ module.exports = function(config, redis) {
              */
 
             // Random boolean for testing purposes, if true the service will crash
-            var willDie = Boolean(Math.floor(Math.random() * 2));
+            //demo is asking for a math job
+            busTalk.getAnswer('math', 'printMessage', 2,process.pid, config).then(function (result) {
+                console.log('Demo had a respond %s', result);
+                callback(null, result);
+            });
 
+            //var willDie = Boolean(Math.floor(Math.random() * 2));
             // Craft a new message for testing (Since the type of the raw message is string, we will also respond with a string)
-            var newMessage = message + '_handled-by:' + process.pid + '_will-crash:' + willDie;
-
+            //var newMessage = message + '_handled-by:' + process.pid + '_will-crash:' + willDie;
             // Send the processed message back to the master
-            callback(null, newMessage);
-
+            //callback(null, newMessage);
             // Make the app crash if true, this will produce an ungracefull exit... Just for testing
-            if(willDie) process.exit(1);
+            //if(willDie) process.exit(1);
         }
     }
 };

@@ -19,6 +19,14 @@ module.exports = function(config, redis) {
              * The raw message comes in and should be processed.
              * When done processing; the callback message must be called in normal (err, message) format.
              */
+            var functionName = message.function;
+            var data = message.data;
+
+            functionName.apply(null, data);
+
+            function printMessage(string){
+                console.log('apply function %s to %s', functionName, data);
+            }
 
             callback(null, message);
         }
