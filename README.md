@@ -25,7 +25,7 @@ x
 ##Unicorn modules
 ###redis-mthread
 * A multi-threaded listener service for redis.
-* It takes a lot of the responsibilities of the brokers, because is the master thread that receive and send messages.
+* Every service has a redis-mthread and initialized by asking to the brokers for a channel.
 
 ###bus-init
 * The unicorn service initializer, this module must be included in every service to inform the broker that we are up
