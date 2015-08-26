@@ -32,42 +32,6 @@ if (Program.debug) {
     config.debug = true;
 }
 
-// Detect repl mode and set
-if (Program.repl) {
-    console.log('repl mode');
-    var sock = Net.createConnection(13131);
-
-    process.stdin.pipe(sock);
-    sock.pipe(process.stdout);
-
-    sock.on('connect', function () {
-        process.stdin.resume();
-        process.stdin.setRawMode(true)
-    });
-
-    sock.on('exit', function () {
-        console.log('Got "exit" event from repl!');
-        process.exit();
-    });
-
-    sock.on('close', function done () {
-        process.stdin.setRawMode(false);
-        process.stdin.pause();
-        sock.removeListener('close', done);
-    });
-
-    process.stdin.on('end', function () {
-        sock.destroy();
-        console.log();
-    });
-
-    process.stdin.on('data', function (b) {
-        if (b.length === 1 && b[0] === 4) {
-            process.stdin.emit('end');
-        }
-    });
-}
-
 // Detect spawn mode and set
 if (Program.spawn) { // Spawn a process
     // Clean up and check for integer and existance in future
