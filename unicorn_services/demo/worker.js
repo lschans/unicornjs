@@ -3,8 +3,6 @@
  By: Lars van der Schans ( 2015 )
  *************************************************/
 
-var busTalk = require('unicorn/bus-talk');
-
 module.exports = function(config, redis) {
     return {
         startLogic: function () {
@@ -13,9 +11,13 @@ module.exports = function(config, redis) {
              * this code will be executed once on the start of a worker.
              */
 
+            console.log('Hiiiiiii demo started');
+
             // No code needed for this demo
         },
         workLogic: function (message, callback) {
+            console.log('From worker logic also got a message from: ' + message.pid);
+
             /*
              * This function contains the worker logic.
              * The raw message comes in and should be processed.
@@ -25,11 +27,6 @@ module.exports = function(config, redis) {
             // Random boolean for testing purposes, if true the service will crash
             //demo is asking for a math job
 
-            console.log('I a a demo worker, please be nice!');
-            busTalk.getAnswer('math', 'printMessage', 2,process.pid, config).then(function (result) {
-                console.log('Demo had a respond %s', result);
-                callback(null, result);
-            });
 
             //var willDie = Boolean(Math.floor(Math.random() * 2));
             // Craft a new message for testing (Since the type of the raw message is string, we will also respond with a string)

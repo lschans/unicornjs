@@ -3,6 +3,8 @@
  By: Lars van der Schans ( 2015 )
  *************************************************/
 
+var busTalk = require('unicorn/bus-talk');
+
 module.exports = function(config, redis) {
     return {
         startLogic: function () {
@@ -13,6 +15,14 @@ module.exports = function(config, redis) {
             var colors = require('colors');
             // Log the output for demo purposes
             console.log(colors.cyan('Hey demo started'));
+
+            setTimeout(function(){
+                console.log('I a a demo worker, please be nice!');
+                //busTalk.getAnswer(service, serviceRequired, functionName, value, pid, config)
+                busTalk.getAnswer('demo', 'math', 'printMessage', 2, process.pid, config).then(function (result) {
+                    console.log('Demo had a respond %s', result);
+                });
+            }, 2500);
 
             // Dummy interval for sending messages on the bus
             //setInterval(function(){ // Test that will publish stuff
