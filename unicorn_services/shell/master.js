@@ -13,7 +13,9 @@ module.exports = function(config, redis) {
     var sockfile = "/tmp/node-repl-sock",
         commandList = [], // List with available commands
         commandDesc = [], // List with command descriptions
-        commands = {}; // Object with commands added to the scope
+        commands = {}, // Object with commands added to the scope
+        prompt = 'unicorn> ',
+        welcomeMsg = 'Welcome to the unicorn shell (v' + config.npm.version + ')';
 
     return {
         startLogic: function () {
@@ -49,7 +51,7 @@ module.exports = function(config, redis) {
 
                         this.push(result);
                         this.push("\n");
-                        this.push("unicorn> ");
+                        this.push(prompt);
 
                     } else {
                         // het is een standaard repl commando.
@@ -73,9 +75,6 @@ module.exports = function(config, redis) {
 
                 callback();
             }
-
-            var prompt = 'unicorn> ',
-                welcomeMsg = 'Welcome to the unicorn shell (v' + config.npm.version + ')';
 
             function addCommand(command, desc, func) {
                 commands[command] = func;
@@ -124,8 +123,7 @@ module.exports = function(config, redis) {
 
                 var replInput = through2();
 
-                socket.write('Fuck you>');
-
+                socket.write(prompt);
 
                 repl.start({
                     prompt: prompt,
