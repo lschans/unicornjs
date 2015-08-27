@@ -24,6 +24,8 @@ module.exports = function(config, redis) {
 
             functionName.apply(null, data);
 
+            console.log('Math working here please dont bother');
+
             function printMessage(string){
                 console.log('apply function %s to %s', functionName, data);
             }

@@ -11,8 +11,6 @@ module.exports = function(config, redis) {
              * this code will be executed once on the start of a worker.
              */
 
-            console.log('Hiiiiiii demo started');
-
             // No code needed for this demo
         },
         workLogic: function (message, callback) {

@@ -12,17 +12,15 @@ module.exports = function(config, redis) {
              * This function will start when the master process starts
              * this code will be executed once on the start of the master process.
              */
-            var colors = require('colors');
             // Log the output for demo purposes
-            console.log(colors.cyan('Hey demo started'));
+            console.log(('Hey demo started'));
 
-            setTimeout(function(){
-                console.log('I a a demo worker, please be nice!');
+            //setTimeout(function(){
                 //busTalk.getAnswer(service, serviceRequired, functionName, value, pid, config)
                 busTalk.getAnswer('demo', 'math', 'printMessage', 2, process.pid, config).then(function (result) {
                     console.log('Demo had a respond %s', result);
                 });
-            }, 2500);
+            //}, 6000);
 
             // Dummy interval for sending messages on the bus
             //setInterval(function(){ // Test that will publish stuff
