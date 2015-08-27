@@ -59,7 +59,7 @@
     },
     {
       "name":"shell",
-      "type":"redis-mthread",
+      "type":"stand-alone-mthread",
       "lang":"node",
       "masterCode":"master.js",
       "workerCode":"worker.js",

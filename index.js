@@ -36,7 +36,7 @@ if (Program.debug) {
 if (Program.spawn) { // Spawn a process
     // Clean up and check for integer and existance in future
     config.process = config.services[Program.spawn];
-    var thisProcess = require('unicorn/redis-mthread')(config, Redis);
+    var thisProcess = require('unicorn/' + config.process.type)(config, Redis);
 }
 
 // Run all the services
