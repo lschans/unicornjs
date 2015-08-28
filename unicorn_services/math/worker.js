@@ -3,6 +3,8 @@
  By: Lars van der Schans ( 2015 )
  *************************************************/
 
+var busTalk = require('unicorn/bus-talk');
+
 module.exports = function(config, redis) {
     return {
         startLogic: function () {
@@ -19,11 +21,16 @@ module.exports = function(config, redis) {
              * The raw message comes in and should be processed.
              * When done processing; the callback message must be called in normal (err, message) format.
              */
-            var functionName = message.function;
-            var data = message.data;
 
-            console.log('MATH RECEIVE A MSG !')
 
+            console.log(message);
+            var msg = JSON.parse(message);
+
+            console.log('MATH RECEIVE A MSG !');
+
+            busTalk.sendAnswer('math', msg.respondChannel, msg.function,  msg.data, process.pid, config).then(function (result) {
+                console.log('MATH send the answer %s', result);
+            });
             //functionName.apply(null, data);
             //
             //console.log('Math working here please dont bother');
