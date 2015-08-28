@@ -5,17 +5,38 @@
 
 var busTalk = require('unicorn/bus-talk');
 
-module.exports = function(config, redis, unicorn) {
+// Returns a random integer between min and max
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+module.exports = function(config, redis, msgHook) {
     return {
         startLogic: function () {
             /*
              * This function will start when the master process starts
              * this code will be executed once on the start of the master process.
              */
-            var colors = require('colors');
             // Log the output for demo purposes
-            console.log(colors.cyan('Hey math started'));
+            console.log(('Hey lars-test started'));
 
+            if(typeof(msgHook) == 'function') {
+                // Dummy interval for sending messages on the bus
+                setInterval(function(){ // Test that will publish stuff
+                    msgHook({"test":"test message!!"});
+                    var extraJobs = Boolean(Math.floor(Math.random() * 2));
+
+                    if(extraJobs) {
+                        for(var i = 0; i <= getRandomInt(5, 25); i++) {
+                            setTimeout(function () {
+                                msgHook({"test": "test message!!"});
+                            }, getRandomInt(10, 1500));
+                        }
+                    }
+
+                }, 2000);
+            }
         },
         workLogic: function (message) {
             /*
@@ -23,16 +44,9 @@ module.exports = function(config, redis, unicorn) {
              * Message is the processed and final version, usually this is the message that is posted to the response channel
              * A normal action to do would be to post this message back to the response channel
              */
-            var colors = require('colors');
+
             // Log the output for demo purposes
-            var msg = JSON.parse(message);
-
-            console.log('MATH RECEIVE A MSG !');
-
-            unicorn.busTalk.sendAnswer('math', msg.respondChannel, msg.function,  msg.data, process.pid, config).then(function (result) {
-                console.log('MATH send the answer %s', result);
-            });
-            console.log(colors.cyan(message));
+            console.log(message);
         },
         errorLogic: function (err) {
             /*

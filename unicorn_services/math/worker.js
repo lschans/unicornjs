@@ -3,9 +3,7 @@
  By: Lars van der Schans ( 2015 )
  *************************************************/
 
-var busTalk = require('unicorn/bus-talk');
-
-module.exports = function(config, redis) {
+module.exports = function(config, redis, unicorn) {
     return {
         startLogic: function () {
             /*
@@ -23,14 +21,8 @@ module.exports = function(config, redis) {
              */
 
 
-            console.log(message);
-            var msg = JSON.parse(message);
 
-            console.log('MATH RECEIVE A MSG !');
 
-            busTalk.sendAnswer('math', msg.respondChannel, msg.function,  msg.data, process.pid, config).then(function (result) {
-                console.log('MATH send the answer %s', result);
-            });
             //functionName.apply(null, data);
             //
             //console.log('Math working here please dont bother');
