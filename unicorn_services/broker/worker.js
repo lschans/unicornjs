@@ -26,7 +26,12 @@ module.exports = function(config, redis) {
             var client = redis.createClient(config.redis.port, config.redis.server, {});
 
 
+            console.log('BROKER I am '+msg.serviceID+' '+msg.ack);
+
             if (msg.ack == 0) {
+
+                console.log('BROKER WORKER %s', msg.serviceID);
+
                 var publicChannel = redis.createClient(config.redis.port, config.redis.server, {});
 
                 if (msg.serviceID == 'broker') {
@@ -39,24 +44,30 @@ module.exports = function(config, redis) {
                     publicChannel.publish('broker-init', JSON.stringify(msg));
                 }else{
 
-                    console.log(msg.serviceID+' in the broker');
+                    console.log('BROKER '+msg.serviceID+' in the broker');
+
                     if (msg.respondChannel == ' ') { //check if this a message or if this is asking for a channel
                         // Assign a channel
-                        client.HINCRBY('broker_' + process.pid, msg.serviceID, 1);   //Add 1 to the hash of services
+                        console.log('BROKER '+msg.serviceID+' asking for a channel');
+
+                        client.HINCRBY('broker_' + process.pid, msg.serviceID, "1");   //Add 1 to the hash of services
                         channelName = msg.serviceID + '_' + msg.msgpid; // creating service name
-                        client.HINCRBY(msg.serviceID, channelName, 1);   //Add 1 to the hash of services
+                        client.HINCRBY(msg.serviceID, channelName, "1");   //Add 1 to the hash of services
                         msg.ack = 1; // change the state of the msg to process
                         msg.respondChannel = channelName;
                         msg.brokerChain.push({'broker': 'broker_' + process.pid});
                         publicChannel.publish('broker-init', JSON.stringify(msg));
+
                     }else { // the msg is not asking for a channel
                         //pass the message to a service
-                        console.log('I am broker ' + config.process.name + ' processing message... FINALLY');
+
+                        //TODO we need a counter here for not get a endless loop!
+                        console.log('BROKER '+msg.serviceID+' asking for a channel');
+
                         areThereServices(msg.serviceRequired).then(function (boolean) {
                             if (boolean) {
                                 checkServiceFlag(msg.serviceRequired).then(function (serviceAvailable) {
                                     console.log('AQUI ' + msg.serviceID + ' ' + typeof (serviceAvailable));
-
                                     if (typeof (serviceAvailable) == 'undefined')
                                         publicChannel.publish('broker', message);
                                     else
@@ -81,20 +92,17 @@ module.exports = function(config, redis) {
 
     function checkServiceFlag (service){
         return new Promise(function (resolve, reject) {
-            console.log('checkServiceFlag');
+            console.log('BROKER checkServiceFlag');
             var publishClient = redis.createClient(config.redis.port, config.redis.server, {});
             publishClient.HGETALL(service, function (err, hash) {
                 if (err) reject(err);
                 else{
-
-                    console.log('HASH '+ hash)
-
                     if (typeof (hash) != null){ // There are brokers working
                         var aux;
                         for (var serv in hash){
                             if (hash[serv] == '1') {
                                 activateServiceFlag(service).then(function (serviceActive) {
-                                    publishClient.HSET(service, serv, 0);
+                                    publishClient.HSET(service, serv, "0");
                                     resolve(serv); // return the first it gets
                                 })
                             }
@@ -113,7 +121,7 @@ module.exports = function(config, redis) {
 
     function activateServiceFlag (service){
         return new Promise(function (resolve, reject) {
-            console.log('activateServiceFlag');
+            console.log('BROKER activateServiceFlag');
             var publishClient = redis.createClient(config.redis.port, config.redis.server, {});
             publishClient.HGETALL(service, function (err, hash) {
                 if (err) reject(err);
@@ -122,7 +130,7 @@ module.exports = function(config, redis) {
                     if (typeof (hash) != null){ // There are brokers working
                         for (var serv in hash){
                             if (hash[serv] == '0') {
-                                publishClient.HSET(service, serv, 1);
+                                publishClient.HSET(service, serv, "1");
                                 resolve(serv); // return the first it gets
                             }
                             aux = serv;
@@ -140,13 +148,13 @@ module.exports = function(config, redis) {
 
     function areThereServices (service){
         return new Promise(function (resolve, reject) {
-            console.log('areThereServices');
+            console.log('BROKER areThereServices');
             var publishClient = redis.createClient(config.redis.port, config.redis.server, {});
             publishClient.HGETALL(service, function (err, hash) {
                 if (err) reject(err);
                 else{
                     if (typeof (hash) == null){
-                        console.log('NO SERVICES YET!')
+                        console.log('NO SERVICES YET!');
                         resolve(false)
                     } else {
                         resolve(true)
