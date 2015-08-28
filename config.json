@@ -5,7 +5,7 @@
   },
   "rootdir":"",
   "debug":false,
-  "services":[
+  "brokers":[
     {
       "name":"broker",
       "type":"redis-mthread",
@@ -22,7 +22,9 @@
       "minServiceLifetime":60000,
       "maxServiceLifetime":300000,
       "maxExec":1000
-    },
+    }
+  ],
+  "services":[
     {
       "name":"math",
       "type":"redis-mthread",
