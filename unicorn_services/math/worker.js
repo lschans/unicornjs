@@ -22,13 +22,15 @@ module.exports = function(config, redis) {
             var functionName = message.function;
             var data = message.data;
 
-            functionName.apply(null, data);
+            console.log('MATH RECEIVE A MSG !')
 
-            console.log('Math working here please dont bother');
-
-            function printMessage(string){
-                console.log('apply function %s to %s', functionName, data);
-            }
+            //functionName.apply(null, data);
+            //
+            //console.log('Math working here please dont bother');
+            //
+            //function printMessage(string){
+            //    console.log('apply function %s to %s', functionName, data);
+            //}
 
             callback(null, message);
         }
